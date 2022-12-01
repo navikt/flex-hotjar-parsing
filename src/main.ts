@@ -5,19 +5,23 @@ import fetch from 'node-fetch';
 console.log("Start")
 
 interface Response {
-    Emotion: string,
-    Date: string
+    "Emotion (1-5)": string,
+    "Date Submitted": string
 }
 
-const jsonArray: Response[] = await csv().fromFile("409483.csv");
+let survey = "415368";
+const jsonArray: Response[] = await csv().fromFile(survey + ".csv");
 
 const kvernet = jsonArray.map((a) => {
     return {
-        emotion: Number(a.Emotion),
-        sendt: dayjs(a.Date + "Z").toISOString(),
-        survey: "409483"
+        emotion: Number(a["Emotion (1-5)"]),
+        sendt: dayjs(a["Date Submitted"] + "Z").toISOString(),
+        survey: survey
     }
 })
+console.log(kvernet)
+
+throw Error("sdfsdf")
 console.log(kvernet.length)
 
 let antall201 = 0
