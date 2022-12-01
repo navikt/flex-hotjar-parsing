@@ -9,25 +9,48 @@ interface Response {
     Date: string
 }
 
-const jsonArray = await csv().fromFile("415368.csv");
+const jsonArray: Response[] = await csv().fromFile("409483.csv");
 
 const kvernet = jsonArray.map((a) => {
     return {
         emotion: Number(a.Emotion),
         sendt: dayjs(a.Date + "Z").toISOString(),
-        survey: "415368"
+        survey: "409483"
     }
 })
 console.log(kvernet)
 
+let antall201 = 0
+let antall500 = 0
+let antall504 = 0
+let antallAnnet = 0
 
-kvernet.forEach(async (k)=> {
-    const response = await fetch("https://flex-hotjar-emotions.dev.intern.nav.no/api/v1/emotion/arkiv", {
+kvernet.forEach(async (k) => {
+    const response = await fetch("https://flex-hotjar-emotions.intern.nav.no/api/v1/emotion/arkiv", {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(k)
     });
-    console.log("Status " + response.status)
+    switch (response.status) {
+        case 201:
+            antall201++
+            break
+        case 500:
+            antall500++
+            break
+        case 504:
+            antall504++
+            break
+        default: {
+            antallAnnet++
+            console.log("Status " + response.status)
+        }
+    }
 })
+
+console.log("201 antall ", antall201)
+console.log("500 antall ", antall500)
+console.log("504 antall ", antall504)
+console.log("annet antall ", antallAnnet)
