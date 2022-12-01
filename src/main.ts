@@ -18,14 +18,16 @@ const kvernet = jsonArray.map((a) => {
         survey: "409483"
     }
 })
-console.log(kvernet)
+console.log(kvernet.length)
 
 let antall201 = 0
 let antall500 = 0
 let antall504 = 0
 let antallAnnet = 0
 
-kvernet.forEach(async (k) => {
+let i = 0
+for (const k of kvernet) {
+    i++
     const response = await fetch("https://flex-hotjar-emotions.intern.nav.no/api/v1/emotion/arkiv", {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
         headers: {
@@ -33,9 +35,11 @@ kvernet.forEach(async (k) => {
         },
         body: JSON.stringify(k)
     });
+    console.log(i + " : " + response.status)
+
     switch (response.status) {
         case 201:
-            antall201++
+            antall201 = antall201 + 1
             break
         case 500:
             antall500++
@@ -48,7 +52,8 @@ kvernet.forEach(async (k) => {
             console.log("Status " + response.status)
         }
     }
-})
+}
+
 
 console.log("201 antall ", antall201)
 console.log("500 antall ", antall500)
