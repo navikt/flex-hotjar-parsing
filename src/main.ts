@@ -1,5 +1,6 @@
 import * as csv from "csvtojson";
 import * as dayjs from "dayjs";
+import fetch from 'node-fetch';
 
 console.log("Start")
 
@@ -18,3 +19,15 @@ const kvernet = jsonArray.map((a) => {
     }
 })
 console.log(kvernet)
+
+
+kvernet.forEach(async (k)=> {
+    const response = await fetch("https://flex-hotjar-emotions.dev.intern.nav.no/api/v1/emotion/arkiv", {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(k)
+    });
+    console.log("Status " + response.status)
+})
