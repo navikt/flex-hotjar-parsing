@@ -19,9 +19,7 @@ const kvernet = jsonArray.map((a) => {
         survey: survey
     }
 })
-console.log(kvernet)
 
-throw Error("sdfsdf")
 console.log(kvernet.length)
 
 let antall201 = 0
